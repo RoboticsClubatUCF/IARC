@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+
+<!-- partially adapted from "https://github.com/PX4/Firmware/blob/master/launch/mavros_posix_sitl.launch" -->
+
+
+<launch>
+
+	<arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+	<arg name="Y" default="0"/>
+
+	<arg name="est" default="ekf2"/>
+    <arg name="vehicle" default="lakitu"/>
+    <arg name="world" default="$(find lakitu_sim)/worlds/lak_sim.world"/>
+    <arg name="urdf" default="$(find lakitu)/urdf/lakitu.urdf"/>
+	<arg name="rcS" default="$(find px4)/posix-configs/SITL/init/$(arg est)/$(arg vehicle)_custom"/>
+
+	<arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="true"/>
+    <arg name="paused" default="false"/>
+	<arg name="respawn_gazebo" default="false"/>
+
+	<arg name="fcu_url" default="udp://:14540@localhost:14557"/>
+
+	<include file="$(find px4)/launch/mavros_posix_sitl.launch">
+        <arg name="x" value="$(arg x)"/>
+        <arg name="y" value="$(arg y)"/>
+        <arg name="z" value="$(arg z)"/>
+        <arg name="R" value="$(arg R)"/>
+        <arg name="P" value="$(arg P)"/>
+        <arg name="Y" value="$(arg Y)"/>
+        <arg name="world" value="$(arg world)"/>
+        <arg name="vehicle" value="$(arg vehicle)"/>
+        <arg name="urdf" value="$(arg urdf)"/>
+        <arg name="rcS" value="$(arg rcS)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
+	</include>
+
+	<node pkg="lakitu" type="state_control.py" name="state-machine"/>
+		
+ </launch> 	

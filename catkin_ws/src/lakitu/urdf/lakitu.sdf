@@ -1,0 +1,85 @@
+<sdf version='1.6'>
+  <model name='lakitu'>
+    <link name='base_link'>
+      <pose frame=''>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose frame=''>0 0 -0.046134 0 -0 0</pose>
+        <mass>1.7</mass>
+        <inertia>
+          <ixx>3.0003</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>3.0003</iyy>
+          <iyz>0</iyz>
+          <izz>3</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_fixed_joint_lump__airframe_collision'>
+        <pose frame=''>0 0 -0.0508 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.1016</length>
+            <radius>0.254</radius>
+          </cylinder>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__odroid_collision_1'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.08128 0.05588 0.0254</size>
+          </box>
+        </geometry>
+      </collision>
+      <collision name='base_link_fixed_joint_lump__pixracer_IMU_collision_2'>
+        <pose frame=''>0 0 -0.022276 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03862 0.04486 0.01471</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.08128 0.05588 0.0254</size>
+          </box>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__airframe_visual_1'>
+        <pose frame=''>0 0 -0.0508 0 -0 0</pose>
+        <geometry>
+          <cylinder>
+            <length>0.1016</length>
+            <radius>0.254</radius>
+          </cylinder>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__odroid_visual_2'>
+        <pose frame=''>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.08128 0.05588 0.0254</size>
+          </box>
+        </geometry>
+      </visual>
+      <visual name='base_link_fixed_joint_lump__pixracer_IMU_visual_3'>
+        <pose frame=''>0 0 -0.044552 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.03862 0.04486 0.01471</size>
+          </box>
+        </geometry>
+      </visual>
+    </link>
+
+    
+
+
+
+
+
+    
+  </model>
+</sdf>
