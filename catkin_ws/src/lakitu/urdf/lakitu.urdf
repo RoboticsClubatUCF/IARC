@@ -46,6 +46,22 @@
           	</material>
 		</visual>
 	</link>
+	
+	<joint name="j1" type="fixed">
+	    <parent link="base_link"/>
+	    <child link="airframe"/>
+	</joint>
+	
+	<joint name="j2" type="fixed">
+	    <parent link="airframe"/>
+	    <child link="odroid"/>
+	</joint>
+	
+	<joint name="j3" type="fixed">
+	    <parent link="airframe"/>
+	    <child link="pixracer_IMU"/>
+	</joint>
+	
 		
  	
  
