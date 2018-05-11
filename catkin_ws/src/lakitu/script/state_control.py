@@ -19,6 +19,7 @@ if __name__=='__main__':
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
 	cmdVelPub = rospy.Publisher("/mavros/setpoint_velocity/cmd_vel", TwistStamped, queue_size=100)
+	# cmdVelListener = rospy.subscriber("/mavros/setpoint_velocity/cmd_vel", TwistStamped, )
 	armCommandSrv = rospy.ServiceProxy("/mavros/cmd/arming", CommandBool)
 	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
 
