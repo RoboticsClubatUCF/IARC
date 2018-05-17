@@ -8,17 +8,15 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, TwistStamped
 from custom_msgs.msg import StateMachine
 
-takeoff_state = None
 flight_state = None
 current_state = None
 current_pos = None
 
 def callback(data):
 	
-	global takeoff_state, flight_state
-	takeoff_state = data.takeoff
+	global flight_state
 	flight_state = data.flight
-	# print(str(preflight_state))
+	print(str(flight_state))
 
 def getCurrentState(data):
 
@@ -30,55 +28,55 @@ def getCurrentPosition(data):
 	global current_pos
 	current_pos = data
 
+
 if __name__=='__main__':
 
-	rospy.init_node('takeoff_node', anonymous=True)
+	rospy.init_node('flight_node', anonymous=True)
+
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
-	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
+	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
+	#service proxies for arming and setting mode
+	armCommandSrv = rospy.ServiceProxy("/mavros/cmd/arming", CommandBool)
 	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
-	
-	rate = rospy.Rate(60)
+
+	#msgs sent at 60hz
+	rate = rospy.Rate(10)
 
 	#creating pose msg
 	pose = PoseStamped()
 	pose.pose.position.x = 0
 	pose.pose.position.y = 0
-	pose.pose.position.z = .2
+	pose.pose.position.z = .5
 
-	#StateMachine msg that will switch Lakitu to 'flight' state
+	#StateMachine msg that will switch Lakitu to 'hover' state
 	state = StateMachine()
 	state.preflight = False
 	state.takeoff = False
-	state.flight = True
-	state.hover = False
+	state.flight = False
+	state.hover = True
 	state.land = False
 	state.emergency = False
 
+	# last_request = rospy.Time.now()
+
+	#main loop of program
 	while not rospy.is_shutdown():
-		
-		#takeoff node does nothing if not in takeoff state
-		if(takeoff_state == None):
+
+		if(flight_state is None):
+			# print('what the fuck')
 			continue
-		#shouldn't do anything if current_state isn't reading	
-		if(current_state == None):
+		if(current_state is None):
 			continue
-		if(current_pos == None):
+		if(current_pos is None):
 			continue	
+
 		if(flight_state):
-			continue	
-				
+			local_pos_pub.publish(pose)	
 
-		if(takeoff_state):
-
-			local_pos_pub.publish(pose)
-			#sets FCU mode to offboard, should also takeoff to z=2
-			if(current_state.mode != "OFFBOARD"):
-				setModeSrv(0, 'OFFBOARD')
-				
-		if((current_pos.pose.pose.position.z >= 1.9) and (current_pos.pose.pose.position.z <= 2.1)):
-			state_pub.publish(state)		
-			
-		rate.sleep()		
+		#if(current_pos.pose.pose.position.x >= 29.9 ) and (current_pos.pose.pose.position.x <= 30.1):
+			#state_pub.publish(state)
+	
+		rate.sleep()

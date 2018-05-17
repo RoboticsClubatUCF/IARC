@@ -10,7 +10,8 @@
 	<node pkg="lakitu" type="init.py" name="init_node" />
 	<node pkg="lakitu" type="preflight.py" name="preflight_node" />
 	<node pkg="lakitu" type="takeoff.py" name="takeoff_node" />	
-	<node pkg="lakitu" type="flight.py" name="flight_node" />
+	<node pkg="lakitu" type="flight_test.py" name="flight_test_node" />
+	<!-- <node pkg="lakitu" type="flight.py" name="flight_node" /> -->
 	
 		
  </launch> 	
