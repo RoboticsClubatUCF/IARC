@@ -5,7 +5,7 @@ import math
 from mavros_msgs.srv import CommandBool, SetMode
 from mavros_msgs.msg import State
 from geometry_msgs.msg import PoseStamped, TwistStamped
-#from custom_msgs.msg import StateMachine
+from custom_msgs.msg import StateMachine
 
 
 if __name__=='__main__':
