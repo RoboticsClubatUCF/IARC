@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import rospy, mavros
-import math
+import math, numpy
 from mavros_msgs.srv import CommandBool, SetMode
 from mavros_msgs.msg import State, RCIn
 from geometry_msgs.msg import PoseStamped, TwistStamped
@@ -12,8 +12,7 @@ rcNum = None
 def callback(data):
 
 	global rcNum
-	rcNUm = data.channels[6]
-	print(rcNum)
+	rcNum = data.channels[6]
 
 if __name__=='__main__':
 
@@ -29,7 +28,13 @@ if __name__=='__main__':
 	state.land = False
 	state.emergency = False
 
-	init_state_pub.publish(state)
+	rate = rospy.Rate(60)	
 
 	while not rospy.is_shutdown():
-		rospy.spin()
+		
+		if rcNum == 2113:
+                    	init_state_pub.publish(state)
+		else:
+			print('fuck yourself')
+			continue
+        	rate.sleep()
