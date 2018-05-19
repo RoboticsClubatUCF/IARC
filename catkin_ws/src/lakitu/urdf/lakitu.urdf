@@ -8,9 +8,9 @@
 			<geometry>
 				<box size="0.08128 0.05588 0.0254"/>
 			</geometry>
-		</visual>	
+		</visual>
 	</link>
-	
+
 	<link name="odroid">
 		<visual>
           	<origin xyz="0 0 0" rpy="0 0 0 "/>
@@ -20,7 +20,7 @@
             <material name="Cyan1">
                   <color rgba="0 0.9 0.9 1.0"/>
             </material>
-        </visual>	
+        </visual>
     </link>
 
 	<link name="airframe">
@@ -34,7 +34,7 @@
           	</material>
 		</visual>
 	</link>
-          
+
     <link name="pixracer_IMU">
 		<visual>
           	<origin xyz="0 0 -0.0222758" rpy="0 0 0"/>
@@ -46,23 +46,37 @@
           	</material>
 		</visual>
 	</link>
-	
+
+	<link name="camera">
+		<visual>
+          	<origin xyz="0 0 .3" rpy="0 0 0"/>
+          	<geometry>
+              	<box size="0.1 0.1 0.1" />
+            </geometry>
+          	<material name="Cyan2">
+              	<color rgba="66 239 80 1"/>
+          	</material>
+		</visual>
+	</link>
+
 	<joint name="j1" type="fixed">
 	    <parent link="base_link"/>
 	    <child link="airframe"/>
 	</joint>
-	
+
 	<joint name="j2" type="fixed">
 	    <parent link="airframe"/>
 	    <child link="odroid"/>
 	</joint>
-	
+
 	<joint name="j3" type="fixed">
 	    <parent link="airframe"/>
 	    <child link="pixracer_IMU"/>
 	</joint>
-	
-		
- 	
- 
+
+	<joint name="j4" type="fixed">
+	    <parent link="airframe"/>
+	    <child link="camera"/>
+	</joint>
+
 </robot>

@@ -1,6 +1,6 @@
 <!--    John Millner
         Lakitu
-        Test for detecting ArUco 
+        Test for detecting ArUco
 -->
 
 <launch>
@@ -20,12 +20,16 @@
         <remap from="/camera" to="/camera/image_raw"/>
         <remap from="/camera_info" to="/camera/camera_info"/>
     </node>
-    
+
     <node name="fid" pkg="image_view" type="image_view" respawn="false" output="screen">
         <remap from="image" to="/fiducial_images"/>
         <param name="autosize" value="true" />
     </node>
-    
 
-    
+	<param name="lakitu_urdf" textfile="$(find lakitu)/urdf/lakitu.urdf" />
+
+    <node pkg="robot_state_publisher" type="state_publisher" name="rob_st_pub" >
+        <remap from="robot_description" to="lakitu_urdf" />
+    </node>
+
 </launch>
