@@ -17,9 +17,8 @@ LAUNCHING SIMULATOR:
 	roslaunch lakitu_sim lakitu_sim.launch //launch file that launches PX4 and a ROS Node with code at /lakitu/script/state_control.py
 	
 ASSOCIATED FILES:
-	
-	lakitu/script/state_control.py //the working ros bullshit
-	lakitu/urdf/lakitu.urdf //urdf for lakitu, black-magic fuckery plugins from px4(iris)
+
+	lakitu/script : script files for control of lakitu and lakitu_sim
 	lakitu_sim/launch/lakitu_sim.launch //launch file for sim
 	px4/Firmware/launch/mavros_posix_sitl.launch //referenced px4 launch file for sim
 	
