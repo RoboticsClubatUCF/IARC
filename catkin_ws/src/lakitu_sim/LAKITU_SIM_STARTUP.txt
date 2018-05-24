@@ -1,7 +1,6 @@
 SETUP:
 
-	"git clone https://github.com/PX4/Firmware.git" to get PX4 ros package
-	INSIDE FIRMWARE: "make posix_sitl_defaul gazebo" (will take a while, should launch gazebo when done)
+	NAVIGATE TO CATKIN_WS/SRC AND "git clone https://github.com/PX4/Firmware.git" to get PX4 ros package
 	GOTO CATKIN_WS AND "catkin_make" (this might take a while the first time)
 	//NOTE: PX4 should require no modifications to run properly
 
