@@ -30,11 +30,12 @@ if __name__=='__main__':
 
 	rate = rospy.Rate(60)	
 
+	flag = True
 	while not rospy.is_shutdown():
 		
-		if rcNum == 2113:
+		if rcNum == 2113 and flag:
                     	init_state_pub.publish(state)
+			flag = False
 		else:
-			print('fuck yourself')
 			continue
         	rate.sleep()
