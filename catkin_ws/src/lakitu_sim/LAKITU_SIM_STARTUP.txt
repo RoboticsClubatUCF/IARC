@@ -40,6 +40,9 @@ SENDING COMMANDS (format):
 		rostopic list //gives all currently defined topics
 		rostopic echo [topic_name] //outputs messages published to [topic_name]
 		
+	Flipping start switch:
+		rostopic pub -l /mavros/rc/in mavros_msgs/RCIls: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]}'
+		
 	
 DOCS:
 
