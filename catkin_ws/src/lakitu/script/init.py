@@ -22,7 +22,16 @@ if __name__=='__main__':
 	state.land = False
 	state.emergency = False
 
-	init_state_pub.publish(state)
+
+	rate = rospy.Rate(60)	
+
+	flag = True
 
 	while not rospy.is_shutdown():
-		rospy.spin()
+		
+		if rcNum == 2113 and flag:
+                    	init_state_pub.publish(state)
+			flag = False
+		else:
+			continue
+        	rate.sleep()
