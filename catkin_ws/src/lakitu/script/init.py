@@ -8,10 +8,17 @@ from geometry_msgs.msg import PoseStamped, TwistStamped
 from custom_msgs.msg import StateMachine
 
 
+rcNum = None
+
+def callback(data):
+
+	global rcNum
+	rcNum = data.channels[6]
+
 if __name__=='__main__':
 
 	rospy.init_node("init_node", anonymous=True)
-	rospy.Subscriber("/mavros/rc/in", RCIn, queue_size=100)
+	rospy.Subscriber("/mavros/rc/in", RCIn, callback)
 	init_state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100, latch=True)
 
 	state = StateMachine()
@@ -22,7 +29,14 @@ if __name__=='__main__':
 	state.land = False
 	state.emergency = False
 
-	init_state_pub.publish(state)
+	rate = rospy.Rate(60)	
 
+	flag = True
 	while not rospy.is_shutdown():
-		rospy.spin()
+		
+		if rcNum == 2113 and flag:
+                    	init_state_pub.publish(state)
+			flag = False
+		else:
+			continue
+rate.sleep()
