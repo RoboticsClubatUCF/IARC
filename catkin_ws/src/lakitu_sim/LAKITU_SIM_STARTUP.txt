@@ -41,7 +41,8 @@ SENDING COMMANDS (format):
 		rostopic echo [topic_name] //outputs messages published to [topic_name]
 		
 	Flipping start switch:
-		rostopic pub -l /mavros/rc/in mavros_msgs/RCIls: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]}'
+		rostopic pub -l /mavros/rc/in mavros_ms/RCIn '{channels: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]}'
+
 		
 	
 DOCS:
