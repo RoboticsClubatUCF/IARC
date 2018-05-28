@@ -42,6 +42,17 @@ SENDING COMMANDS (format):
 		rostopic list //gives all currently defined topics
 		rostopic echo [topic_name] //outputs messages published to [topic_name]
 		
+<<<<<<< HEAD
+=======
+	Flipping start switch:
+<<<<<<< HEAD
+		rostopic pub -l /mavros/rc/in mavros_ms/RCIn '{channels: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]}'
+
+=======
+		rostopic pub -l /mavros/rc/in mavros_msgs/RCIn {'channels: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]'}
+>>>>>>> 60186f6056cb8b6ece40039f36e7e6bf863ca344
+		
+>>>>>>> a5938b32d1d98fa651fe5edb71e2f27d00721a2c
 	
 DOCS:
 

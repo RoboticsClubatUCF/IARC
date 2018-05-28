@@ -8,15 +8,15 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import PoseStamped, TwistStamped
 from custom_msgs.msg import StateMachine
 
-hover_state = None
+flight_state = None
 current_state = None
 current_pos = None
 
 def callback(data):
 	
-	global hover_state
-	hover_state = data.hover
-	# print(str(hover_state))
+	global flight_state
+	flight_state = data.flight
+	print(str(flight_state))
 
 def getCurrentState(data):
 
@@ -28,34 +28,35 @@ def getCurrentPosition(data):
 	global current_pos
 	current_pos = data
 
+
 if __name__=='__main__':
 
-	rospy.init_node('hover_node', anonymous=True)
+	rospy.init_node('flight_node', anonymous=True)
 
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
-
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
-
+	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
+	#service proxies for arming and setting mode
+	armCommandSrv = rospy.ServiceProxy("/mavros/cmd/arming", CommandBool)
 	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
 
 	#msgs sent at 60hz
 	rate = rospy.Rate(10)
 
-	#creating pose msg, should be same as takeoff
-	#TODO: would this be better as a PARAMETER or message, rather than a set of constants?
-	# pose = PoseStamped()
-	# pose.pose.position.x = 0
-	# pose.pose.position.y = 0
-	# pose.pose.position.z = 2
+	#creating pose msg
+	pose = PoseStamped()
+	pose.pose.position.x = 0
+	pose.pose.position.y = 0
+	pose.pose.position.z = .5
 
-	#StateMachine msg that will switch Lakitu to 'flight' state
+	#StateMachine msg that will switch Lakitu to 'hover' state
 	state = StateMachine()
 	state.preflight = False
 	state.takeoff = False
-	state.flight = True
-	state.hover = False
+	state.flight = False
+	state.hover = True
 	state.land = False
 	state.emergency = False
 
@@ -64,21 +65,18 @@ if __name__=='__main__':
 	#main loop of program
 	while not rospy.is_shutdown():
 
-		if(hover_state is None):
+		if(flight_state is None):
 			# print('what the fuck')
 			continue
 		if(current_state is None):
 			continue
 		if(current_pos is None):
-			continue
+			continue	
 
-		if(hover_state):
-			
-			# local_pos_pub.publish(pose)
-			
-			if(current_state.mode != "OFFBOARD"):
-				setModeSrv(0, 'OFFBOARD')
-			# setModeSrv(0, "AUTO.LOITER") #FAILS DUE TO RC FAILSAFE
+		if(flight_state):
+			local_pos_pub.publish(pose)	
 
-
+		#if(current_pos.pose.pose.position.x >= 29.9 ) and (current_pos.pose.pose.position.x <= 30.1):
+			#state_pub.publish(state)
+	
 		rate.sleep()

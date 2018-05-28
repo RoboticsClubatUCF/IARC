@@ -36,14 +36,16 @@ if __name__=='__main__':
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
+	
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
 	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
+	
 	#service proxies for arming and setting mode
 	armCommandSrv = rospy.ServiceProxy("/mavros/cmd/arming", CommandBool)
 	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
 
 	#msgs sent at 60hz
-	rate = rospy.Rate(10)
+	rate = rospy.Rate(60)
 
 	#creating pose msg
 	pose = PoseStamped()
