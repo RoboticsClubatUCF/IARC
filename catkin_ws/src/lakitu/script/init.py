@@ -11,20 +11,12 @@ from custom_msgs.msg import StateMachine
 ''' init state listens for rc start switch, then publishes the first StateMachine msg'''
 
 rcNum = None
-target_x = 0.0
-target_y = 0.0
-target_z = 0.0
 
 def flightCallback(data):
 
-	global target_x
-	global target_y
-	global target_z
+	flight_pub.publish(data)
 
-	target_x = data.pose.position.x
-	target_y = data.pose.position.y
-	target_z = data.pose.position.z
-	
+
 def callback(data):
 
 	global rcNum
@@ -48,18 +40,11 @@ if __name__=='__main__':
 	state.land = False
 	state.emergency = False
 
-	targetPose = PoseStamped()
-	targetPose.pose.position.x = target_x
-	targetPose.pose.position.y = target_y
-	targetPose.pose.position.z = target_z
-
 	rate = rospy.Rate(60) #refreshes at 60 Hz	
 
 	flag = True #to stop constant publishing of preflight state
 
 	while not rospy.is_shutdown():
-
-		flight_pub.publish(targetPose)
 		
 		if rcNum == 2113 and flag: #listens for RC switch, publishes state ONCE
 			init_state_pub.publish(state)
