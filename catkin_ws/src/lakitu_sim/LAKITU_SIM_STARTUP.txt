@@ -50,7 +50,7 @@ SENDING COMMANDS (format):
 		
 	Publishing flight targets:
 	
-		rostopic pub -l /lakitu/flight_target geometry_msgs/PoseStamped {'header: {stampnow}, pose: {position: {x: 0,y: 0,z: 5}, orientation: {x: 0,y: 0,z: 0,w: 0}'}} -r 120
+		rostopic pub -l /lakitu/flight_target geometry_msgs/PoseStamped {'header: {stamp}, pose: {position: {x: 0,y: 0,z: 5}, orientation: {x: 0,y: 0,z: 0,w: 0}'}} -r 120
 
 
 	
