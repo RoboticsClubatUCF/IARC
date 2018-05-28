@@ -13,7 +13,7 @@ LAUNCHING SIMULATOR:
 	source ~/catkin_ws/devel/setup.bash
 	source Tools/setup_gazebo.bash $(pwd) $(pwd)/build/posix_sitl_default
 	export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
-	export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
+	export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazeborostopic pub -l /lakitu/flight_target geometry_msgs/PoseStamped {'header: {stamp}, pose: {position: {x: 0,y: 0,z: 5}, orientation: {x: 0,y: 0,z: 0,w: 0}'}} -r 120
 
 	roslaunch lakitu_sim lakitu_sim.launch //launch file that launches PX4 and a ROS Node with code at /lakitu/script/state_control.py
 	
@@ -42,17 +42,17 @@ SENDING COMMANDS (format):
 		rostopic list //gives all currently defined topics
 		rostopic echo [topic_name] //outputs messages published to [topic_name]
 		
-<<<<<<< HEAD
-=======
-	Flipping start switch:
-<<<<<<< HEAD
-		rostopic pub -l /mavros/rc/in mavros_ms/RCIn '{channels: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]}'
 
-=======
+
+	Flipping start switch:
+
 		rostopic pub -l /mavros/rc/in mavros_msgs/RCIn {'channels: [0,0,0,0,0,0,2113,0,0,0,0,0,0,0,0,0,0,0]'}
->>>>>>> 60186f6056cb8b6ece40039f36e7e6bf863ca344
 		
->>>>>>> a5938b32d1d98fa651fe5edb71e2f27d00721a2c
+	Publishing flight targets:
+	
+		rostopic pub -l /lakitu/flight_target geometry_msgs/PoseStamped {'header: {stamp: now},pose: {position: {x: 0,y: 0,z: 5}, orientation: {x: 0,y: 0,z: 0,w: 0}'}} -r 120
+
+
 	
 DOCS:
 
