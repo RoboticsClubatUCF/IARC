@@ -12,6 +12,8 @@ takeoff_state = None
 flight_state = None
 current_state = None
 current_pos = None
+destination = None
+
 
 def callback(data):
 	
@@ -29,6 +31,10 @@ def getCurrentPosition(data):
 
 	global current_pos
 	current_pos = data
+	
+def getDestination(data):
+	global destination
+	destination = data
 
 if __name__=='__main__':
 
@@ -37,28 +43,39 @@ if __name__=='__main__':
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
-
+	
+	rospy.Subscriber("/lakitu/flight_target", PoseStamped, getDestination)
+	
 	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100, latch=True)
 	
 	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
 	
 	rate = rospy.Rate(60)
-
-	# #creating pose msg
-	# pose = PoseStamped()
-	# pose.pose.position.x = 0
-	# pose.pose.position.y = 0
-	# pose.pose.position.z = 2
+	
+	# select desired initial height (needs to be a float)
+	height = float(5)
 
 	#StateMachine msg that will switch Lakitu to 'hover' state
 	state = StateMachine()
 	state.preflight = False
 	state.takeoff = False
-	state.flight = False
-	state.hover = True
+	state.flight = True
+	state.hover = False
 	state.land = False
 	state.emergency = False
+	
+	while current_pos == None and not rospy.is_shutdown():
+		continue
+		
+	start_pos = current_pos
+	
+	# create pose destination based on desired height
+	pose = PoseStamped()
+	pose.pose.position.x = start_pos.pose.pose.position.x
+	pose.pose.position.y = start_pos.pose.pose.position.y
+	pose.pose.position.z = height
+
 
 	while not rospy.is_shutdown():
 		
@@ -72,16 +89,26 @@ if __name__=='__main__':
 			continue	
 		if(flight_state):
 			continue	
+		if(destination == None):
+			continue
+		
 				
 
 		if(takeoff_state):
 
-			# local_pos_pub.publish(pose)
 			#sets FCU mode to offboard, should also takeoff to z=2
 			if(current_state.mode != "OFFBOARD"):
 				setModeSrv(0, 'OFFBOARD')
 			
-			if((current_pos.pose.pose.position.z >= 1.9) and (current_pos.pose.pose.position.z <= 2.1)):
-				state_pub.publish(state)
+			# once we have reached the desired height, switch to desired state
+			if(current_pos.pose.pose.position.z >= start_pos.pose.pose.position.z + height - float(0.1))\
+			 and (current_pos.pose.pose.position.z >= start_pos.pose.pose.position.z + height + float(0.1)):
+			 	state_pub.publish(state)
+			 
+			local_pos_pub.publish(pose)
 			
 		rate.sleep()		
+		
+		
+		
+		

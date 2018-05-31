@@ -12,9 +12,9 @@ from custom_msgs.msg import StateMachine
 
 rcNum = None
 
-def flightCallback(data):
+#def flightCallback(data):
 
-	flight_pub.publish(data)
+	#flight_pub.publish(data)
 
 
 def callback(data):
@@ -27,7 +27,7 @@ if __name__=='__main__':
 	rospy.init_node("init_node", anonymous=True)
 
 	rospy.Subscriber("/mavros/rc/in", RCIn, callback) #subscribe to mavros topic for RC Data
-	rospy.Subscriber("/lakitu/flight_target", PoseStamped, flightCallback)
+	#rospy.Subscriber("/lakitu/flight_target", PoseStamped, flightCallback)
 	
 	init_state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100, latch=True)
 	flight_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=100, latch=True)
