@@ -30,8 +30,8 @@ def getCurrentPosition(data):
 	current_pos = data
 	
 def getDestination(data):
-	global destination
-	destination = data
+	global destination_pos
+	destination_pos = data
 
 
 if __name__=='__main__':
@@ -72,15 +72,17 @@ if __name__=='__main__':
 		if(current_state is None):
 			continue
 		if(current_pos is None):
-			continue	
+			continue
+		if(destination_pos is None):
+			continue
 
 		if(flight_state):
-			local_pos_pub.publish(destination)	
+			local_pos_pub.publish(destination_pos)	
 
-		if(current_pos.pose.pose.position.x >= destination.pose.position.x - float(0.1) )\
-		 and (current_pos.pose.pose.position.x <= destination.pose.position.x + float(0.1))\
-		 and (current_pos.pose.pose.position.y >= destination.pose.position.y - float(0.1))\
-		 and (current_pos.pose.pose.position.y <= destination.pose.position.y + float(0.1)):
+		if(current_pos.pose.pose.position.x >= destination_pos.pose.position.x - float(0.1) )\
+		 and (current_pos.pose.pose.position.x <= destination_pos.pose.position.x + float(0.1))\
+		 and (current_pos.pose.pose.position.y >= destination_pos.pose.position.y - float(0.1))\
+		 and (current_pos.pose.pose.position.y <= destination_pos.pose.position.y + float(0.1)):
 			state_pub.publish(state)
 	
 		rate.sleep()
