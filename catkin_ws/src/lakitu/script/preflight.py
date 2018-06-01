@@ -25,10 +25,13 @@ if __name__=='__main__':
 
 	#initialize node, subscribe to state
 	rospy.init_node('preflight_node', anonymous=True)	
+	
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
+	
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
 	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
+	
 	#service proxies for arming and setting mode
 	armCommandSrv = rospy.ServiceProxy("/mavros/cmd/arming", CommandBool)
 	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
@@ -56,21 +59,15 @@ if __name__=='__main__':
 	#main loop of program
 	while not rospy.is_shutdown():
 
-		#publishes 'empty' local pose to allow offboard mode
-		# local_pos_pub.publish(pose)	
-
-
 		if(preflight_state is None):
 			continue
+		
 		if(current_state is None):
 			continue
 
 		if(preflight_state):
-			# local_pos_pub.publish(pose)
 			if(not current_state.armed and (rospy.Time.now() -last_request > rospy.Duration(5.0))):
 				armCommandSrv(True)
-		# 	if(current_state.mode != "OFFBOARD" and (current_state.armed is True)):
-		# 		setModeSrv(0, 'OFFBOARD')
 
 		if(current_state.armed and preflight_state):
 			state_pub.publish(state)

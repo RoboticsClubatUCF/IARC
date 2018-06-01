@@ -42,6 +42,7 @@ if __name__=='__main__':
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
 	rospy.Subscriber("/lakitu/flight_target", PoseStamped, getDestination)
+	
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
 	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
 	
