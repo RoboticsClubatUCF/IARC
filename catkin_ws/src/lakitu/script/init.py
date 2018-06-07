@@ -39,6 +39,17 @@ if __name__=='__main__':
 	state.hover = False
 	state.land = False
 	state.emergency = False
+	state.manual = False
+
+	state_manual = StateMachine() #should switch state to preflight when RC switch flipped
+	state_manual.preflight = False
+	state_manual.takeoff = False
+	state_manual.flight = False
+	state_manual.hover = False
+	state_manual.land = False
+	state_manual.emergency = False
+	state_manual.manual = True
+
 
 	rate = rospy.Rate(60) #refreshes at 60 Hz	
 
@@ -49,5 +60,9 @@ if __name__=='__main__':
 		if rcNum == 2113 and flag: #listens for RC switch, publishes state ONCE
 			init_state_pub.publish(state)
 			flag = False
+
+		if rcNum == 961:
+			init_state_pub.publish(state_manual)	
+			flag =True	
 
 		rate.sleep()

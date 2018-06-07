@@ -4,3 +4,4 @@ bool flight
 bool hover
 bool land
 bool emergency
+bool manual

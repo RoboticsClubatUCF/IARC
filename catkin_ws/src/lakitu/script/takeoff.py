@@ -64,6 +64,7 @@ if __name__=='__main__':
 	state.hover = False
 	state.land = False
 	state.emergency = False
+	state.manual = False
 	
 	while current_pos == None and not rospy.is_shutdown():
 		continue
