@@ -102,9 +102,9 @@ if __name__=='__main__':
 				setModeSrv(0, 'OFFBOARD')
 			
 			# once we have reached the desired height, switch to desired state
-			# if(current_pos.pose.pose.position.z >= start_pos.pose.pose.position.z + height - float(0.1))\
-			#  and (current_pos.pose.pose.position.z >= start_pos.pose.pose.position.z + height + float(0.1)):
-			#  	state_pub.publish(state)
+			if(current_pos.pose.pose.position.z >= start_pos.pose.pose.position.z + height - float(0.1))\
+			 and (current_pos.pose.pose.position.z >= start_pos.pose.pose.position.z + height + float(0.1)):
+			 	state_pub.publish(state)
 			 
 			local_pos_pub.publish(pose)
 			

@@ -79,9 +79,11 @@ if __name__=='__main__':
 			local_pos_pub.publish(destination)	
 
 		if(current_pos.pose.pose.position.x >= destination.pose.position.x - float(0.1) )\
-		 and (current_pos.pose.pose.position.x <= destination.pose.position.x + float(0.1))\
-		 and (current_pos.pose.pose.position.y >= destination.pose.position.y - float(0.1))\
-		 and (current_pos.pose.pose.position.y <= destination.pose.position.y + float(0.1)):
-			state_pub.publish(state)
+		  and (current_pos.pose.pose.position.x <= destination.pose.position.x + float(0.1))\
+		  and (current_pos.pose.pose.position.y >= destination.pose.position.y - float(0.1))\
+		  and (current_pos.pose.pose.position.y <= destination.pose.position.y + float(0.1))\
+		  and (current_pos.pose.pose.position.z >= destination.pose.position.z - float(0.1))\
+		  and (current_pos.pose.pose.position.z <= destination.pose.position.z + float(0.1)):
+		 	state_pub.publish(state)
 	
 		rate.sleep()

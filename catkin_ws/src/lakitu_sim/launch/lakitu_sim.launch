@@ -12,6 +12,7 @@
 	<node pkg="lakitu" type="preflight.py" name="preflight_node" />
 	<node pkg="lakitu" type="takeoff.py" name="takeoff_node" />	
 	<node pkg="lakitu" type="flight.py" name="flight_node" />
+	<node pkg="lakitu" type="hover.py" name="hover_node" />
 	<!-- <node pkg="lakitu" type="ekf.py" name="ekf_node" /> -->
  
 	<!-- <node pkg="tf2_ros" type="static_transform_publisher" name="odom_publisher" args="0 0 0 0 0 0 1 map odom"/>	 -->

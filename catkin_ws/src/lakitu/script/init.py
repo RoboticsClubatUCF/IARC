@@ -62,7 +62,7 @@ if __name__=='__main__':
 			flag = False
 
 		if rcNum == 961:
-			init_state_pub.publish(state_manual)	
-			flag =True	
+			init_state_pub.publish(state_manual)
+			flag = True	
 
 		rate.sleep()
