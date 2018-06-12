@@ -11,6 +11,8 @@ from custom_msgs.msg import StateMachine
 ''' init state listens for rc start switch, then publishes the first StateMachine msg'''
 
 rcNum = None
+current_state = None
+
 
 #def flightCallback(data):
 
@@ -28,7 +30,8 @@ if __name__=='__main__':
 
 	rospy.Subscriber("/mavros/rc/in", RCIn, callback) #subscribe to mavros topic for RC Data
 	#rospy.Subscriber("/lakitu/flight_target", PoseStamped, flightCallback)
-	
+	setModeSrv = rospy.ServiceProxy("/mavros/set_mode", SetMode) #http://wiki.ros.org/mavros/CustomModes
+
 	init_state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100, latch=True)
 	flight_pub = rospy.Publisher('/mavros/setpoint_position/local', PoseStamped, queue_size=100, latch=True)
 
@@ -63,6 +66,7 @@ if __name__=='__main__':
 
 		if rcNum == 961:
 			init_state_pub.publish(state_manual)
+			setModeSrv(0, 'MANUAL')
 			flag = True	
 
 		rate.sleep()
