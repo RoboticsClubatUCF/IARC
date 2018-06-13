@@ -75,6 +75,4 @@ if __name__=='__main__':
 
 		if(current_state.armed and preflight_state):
 			state_pub.publish(state)
-
-
 		rate.sleep()
