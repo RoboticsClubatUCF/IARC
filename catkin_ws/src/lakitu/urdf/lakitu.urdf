@@ -166,7 +166,7 @@
           <joint_control_type>velocity</joint_control_type>
         </channel>
       </control_channels>
-      </plugin>
+     </plugin>
 
       <static>0</static>
 
@@ -186,7 +186,6 @@
 
     </gazebo>
       
-  </model>
-
+<!--   </model> -->
 
 </robot>
