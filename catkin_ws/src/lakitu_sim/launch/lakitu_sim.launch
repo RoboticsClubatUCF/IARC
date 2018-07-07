@@ -6,7 +6,10 @@
 <launch>
 
 	<include file="$(find px4)/launch/mavros_posix_sitl.launch"/>
-	<!-- <node pkg="lakitu" type="state_control.py" name="state_control"/> -->
+		<arg name="vehicle" value="son_iris"/>
+		<arg name="sdf" value="$(find lakitu)/urdf/$(arg vehicle).sdf"/>
+		<arg name="paused" value="true"/>
+
 	<node pkg="lakitu" type="init.py" name="init_node" />
 	<node pkg="lakitu" type="preflight.py" name="preflight_node" />
 	<node pkg="lakitu" type="takeoff.py" name="takeoff_node" />	
