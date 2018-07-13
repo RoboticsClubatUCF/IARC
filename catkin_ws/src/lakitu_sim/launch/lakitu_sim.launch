@@ -5,11 +5,12 @@
 
 <launch>
 
-	<include file="$(find px4)/launch/mavros_posix_sitl.launch"/>
-		<arg name="vehicle" value="son_iris"/>
-		<arg name="sdf" value="$(find lakitu)/urdf/$(arg vehicle).sdf"/>
+	<include file="$(find px4)/launch/mavros_posix_sitl.launch">
+		<!-- <arg name="sdf" value="son_iris"/> -->
+		<arg name="sdf" value="$(find lakitu)/models/son_iris/model.sdf"/>
 		<arg name="paused" value="true"/>
-
+	</include>
+		
 	<node pkg="lakitu" type="init.py" name="init_node" />
 	<node pkg="lakitu" type="preflight.py" name="preflight_node" />
 	<node pkg="lakitu" type="takeoff.py" name="takeoff_node" />	
