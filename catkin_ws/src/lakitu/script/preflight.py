@@ -68,7 +68,7 @@ if __name__=='__main__':
 
 		if(preflight_state):
 			# local_pos_pub.publish(pose)
-			if(not current_state.armed and (rospy.Time.now() -last_request > rospy.Duration(5.0))):
+			if(not current_state.armed): 
 				armCommandSrv(True)
 		# 	if(current_state.mode != "OFFBOARD" and (current_state.armed is True)):
 		# 		setModeSrv(0, 'OFFBOARD')
