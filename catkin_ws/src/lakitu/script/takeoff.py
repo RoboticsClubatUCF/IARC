@@ -54,7 +54,7 @@ if __name__=='__main__':
 	rate = rospy.Rate(60)
 	
 	# select desired initial height (needs to be a float)
-	height = float(5)
+	height = float(2)
 
 	#StateMachine msg that will switch Lakitu to 'hover' state
 	state = StateMachine()
@@ -64,6 +64,7 @@ if __name__=='__main__':
 	state.hover = False
 	state.land = False
 	state.emergency = False
+	state.manual = False
 	
 	while current_pos == None and not rospy.is_shutdown():
 		continue

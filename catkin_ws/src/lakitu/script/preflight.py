@@ -53,6 +53,7 @@ if __name__=='__main__':
 	state.hover = False
 	state.land = False
 	state.emergency = False
+	state.manual = False
 
 	last_request = rospy.Time.now()
 
@@ -66,11 +67,12 @@ if __name__=='__main__':
 			continue
 
 		if(preflight_state):
-			if(not current_state.armed and (rospy.Time.now() -last_request > rospy.Duration(5.0))):
+
+			# local_pos_pub.publish(pose)
+			if(not current_state.armed): 
 				armCommandSrv(True)
 
 		if(current_state.armed and preflight_state):
 			state_pub.publish(state)
-
-
+		
 		rate.sleep()

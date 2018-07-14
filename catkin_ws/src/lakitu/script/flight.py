@@ -17,7 +17,7 @@ def callback(data):
 	
 	global flight_state
 	flight_state = data.flight
-	print(str(flight_state))
+	# print(str(flight_state))
 
 def getCurrentState(data):
 
@@ -33,6 +33,10 @@ def getDestination(data):
 	global destination
 	destination = data
 
+def flightCallback(data):
+	global destination
+	destination = data
+	local_pos_pub.publish(data)
 
 if __name__=='__main__':
 
@@ -41,7 +45,6 @@ if __name__=='__main__':
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
-	rospy.Subscriber("/lakitu/flight_target", PoseStamped, getDestination)
 	
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
 	state_pub = rospy.Publisher('/state_machine/state', StateMachine, queue_size=100)
@@ -62,9 +65,16 @@ if __name__=='__main__':
 	state.hover = True
 	state.land = False
 	state.emergency = False
+	state.manual = False
+
+	destination = PoseStamped()
+	destination.pose.position.x = 0
+	destination.pose.position.y = 0
+	destination.pose.position.z = 0
 
 	# last_request = rospy.Time.now()
 
+	# flag = True
 	#main loop of program
 	while not rospy.is_shutdown():
 
@@ -76,12 +86,21 @@ if __name__=='__main__':
 			continue	
 
 		if(flight_state):
-			local_pos_pub.publish(destination)	
 
-		if(current_pos.pose.pose.position.x >= destination.pose.position.x - float(0.1) )\
-		 and (current_pos.pose.pose.position.x <= destination.pose.position.x + float(0.1))\
-		 and (current_pos.pose.pose.position.y >= destination.pose.position.y - float(0.1))\
-		 and (current_pos.pose.pose.position.y <= destination.pose.position.y + float(0.1)):
-			state_pub.publish(state)
+			rospy.Subscriber("/lakitu/flight_target", PoseStamped, flightCallback)
+
+			if(current_state.mode != "OFFBOARD"):
+				setModeSrv(0, 'OFFBOARD')
+			# local_pos_pub.publish(destination)	
+
+
+			#this block of code causes strange behavior	
+			if(current_pos.pose.pose.position.x >= destination.pose.position.x - float(0.1) )\
+			  and (current_pos.pose.pose.position.x <= destination.pose.position.x + float(0.1))\
+			  and (current_pos.pose.pose.position.y >= destination.pose.position.y - float(0.1))\
+			  and (current_pos.pose.pose.position.y <= destination.pose.position.y + float(0.1))\
+			  and (current_pos.pose.pose.position.z >= destination.pose.position.z - float(0.1))\
+			  and (current_pos.pose.pose.position.z <= destination.pose.position.z + float(0.1)):
+			 	state_pub.publish(state)
 	
 		rate.sleep()

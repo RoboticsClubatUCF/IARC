@@ -28,6 +28,10 @@ def getCurrentPosition(data):
 	global current_pos
 	current_pos = data
 
+def flightCallback(data):
+
+
+
 if __name__=='__main__':
 
 	rospy.init_node('hover_node', anonymous=True)
@@ -35,6 +39,8 @@ if __name__=='__main__':
 	rospy.Subscriber("/state_machine/state", StateMachine, callback)
 	rospy.Subscriber("/mavros/state", State, getCurrentState)
 	rospy.Subscriber('/mavros/local_position/odom', Odometry, getCurrentPosition)
+
+	rospy.Subscriber("/lakitu/flight_target", PoseStamped, flightCallback)
 
 	local_pos_pub = rospy.Publisher("/mavros/setpoint_position/local", PoseStamped, queue_size=100)
 
@@ -58,6 +64,7 @@ if __name__=='__main__':
 	state.hover = False
 	state.land = False
 	state.emergency = False
+	state.manual = False
 
 	# last_request = rospy.Time.now()
 
